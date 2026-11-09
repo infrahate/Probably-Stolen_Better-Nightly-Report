@@ -1,0 +1,7 @@
+<Project>
+  <Import Project="$(MSBuildThisFileDirectory)Directory.Build.user.props" Condition="Exists('$(MSBuildThisFileDirectory)Directory.Build.user.props')" />
+  <PropertyGroup>
+    <GameManaged Condition="'$(GameManaged)' == ''">$(MSBuildThisFileDirectory)..\Probably Stolen_Data\Managed</GameManaged>
+    <ModOut Condition="'$(ModOut)' == ''">$(MSBuildThisFileDirectory)..\Mods\BetterNightlyReport</ModOut>
+  </PropertyGroup>
+</Project>

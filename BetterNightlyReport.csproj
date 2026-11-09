@@ -9,31 +9,31 @@
 
   <ItemGroup>
     <Reference Include="Assembly-CSharp">
-      <HintPath>..\..\Probably Stolen_Data\Managed\Assembly-CSharp.dll</HintPath>
+      <HintPath>$(GameManaged)\Assembly-CSharp.dll</HintPath>
       <Private>false</Private>
     </Reference>
     <Reference Include="UnityEngine.UIModule">
-      <HintPath>..\..\Probably Stolen_Data\Managed\UnityEngine.UIModule.dll</HintPath>
+      <HintPath>$(GameManaged)\UnityEngine.UIModule.dll</HintPath>
       <Private>false</Private>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
-      <HintPath>..\..\Probably Stolen_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+      <HintPath>$(GameManaged)\UnityEngine.CoreModule.dll</HintPath>
       <Private>false</Private>
     </Reference>
     <Reference Include="UnityEngine.UI">
-      <HintPath>..\..\Probably Stolen_Data\Managed\UnityEngine.UI.dll</HintPath>
+      <HintPath>$(GameManaged)\UnityEngine.UI.dll</HintPath>
       <Private>false</Private>
     </Reference>
     <Reference Include="Unity.TextMeshPro">
-      <HintPath>..\..\Probably Stolen_Data\Managed\Unity.TextMeshPro.dll</HintPath>
+      <HintPath>$(GameManaged)\Unity.TextMeshPro.dll</HintPath>
       <Private>false</Private>
     </Reference>
     <Reference Include="UnityEngine.ImageConversionModule">
-      <HintPath>..\..\Probably Stolen_Data\Managed\UnityEngine.ImageConversionModule.dll</HintPath>
+      <HintPath>$(GameManaged)\UnityEngine.ImageConversionModule.dll</HintPath>
       <Private>false</Private>
     </Reference>
     <Reference Include="0Harmony">
-      <HintPath>..\..\Probably Stolen_Data\Managed\0Harmony.dll</HintPath>
+      <HintPath>$(GameManaged)\0Harmony.dll</HintPath>
       <Private>false</Private>
     </Reference>
   </ItemGroup>
@@ -45,10 +45,9 @@
 
   <Target Name="InstallMod" AfterTargets="Build">
     <PropertyGroup>
-      <ModDir>$(MSBuildProjectDirectory)\build</ModDir>
+      <ModDir>$(ModOut)</ModDir>
     </PropertyGroup>
-    <RemoveDir Directories="$(ModDir)" />
-    <MakeDir Directories="$(ModDir)\Icons" />
+    <MakeDir Directories="$(ModDir)\Icons" Condition="!Exists('$(ModDir)\Icons')" />
     <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(ModDir)" SkipUnchangedFiles="false" />
     <Copy SourceFiles="$(MSBuildProjectDirectory)\manifest.xml" DestinationFolder="$(ModDir)" SkipUnchangedFiles="false" />
     <Copy SourceFiles="@(IconPng)" DestinationFolder="$(ModDir)\Icons" SkipUnchangedFiles="false" />
