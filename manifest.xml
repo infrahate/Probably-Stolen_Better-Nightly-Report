@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Manifest>
+  <ID>nanotech.better_nightly_report</ID>
+  <Name>Better Nightly Report</Name>
+  <Author>NanoTech</Author>
+  <ModVersion>0.1.0</ModVersion>
+  <Description>Improves the nightly report UI.</Description>
+  <GameVersions>
+    <Version>0.46</Version>
+    <Version>0.46D</Version>
+  </GameVersions>
+  <Prerequisites />
+  <Assemblies>
+    <Assembly>ReportTabIcons.dll</Assembly>
+  </Assemblies>
+  <Capabilities />
+</Manifest>
