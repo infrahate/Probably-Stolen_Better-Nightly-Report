@@ -4,6 +4,7 @@
     <TargetFramework>netstandard2.1</TargetFramework>
     <LangVersion>latest</LangVersion>
     <Nullable>disable</Nullable>
+    <AssemblyName>BetterNightlyReport</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
@@ -39,16 +40,19 @@
 
   <ItemGroup>
     <IconPng Include="Icons\*.png" />
+    <PreviewPng Include="preview.png" Condition="Exists('preview.png')" />
   </ItemGroup>
 
   <Target Name="InstallMod" AfterTargets="Build">
     <PropertyGroup>
-      <ModDir>$(MSBuildProjectDirectory)\..\..\Mods\ReportTabIcons</ModDir>
+      <ModDir>$(MSBuildProjectDirectory)\build</ModDir>
     </PropertyGroup>
-    <MakeDir Directories="$(ModDir)" />
+    <RemoveDir Directories="$(ModDir)" />
+    <MakeDir Directories="$(ModDir)\Icons" />
     <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(ModDir)" SkipUnchangedFiles="false" />
     <Copy SourceFiles="$(MSBuildProjectDirectory)\manifest.xml" DestinationFolder="$(ModDir)" SkipUnchangedFiles="false" />
     <Copy SourceFiles="@(IconPng)" DestinationFolder="$(ModDir)\Icons" SkipUnchangedFiles="false" />
+    <Copy SourceFiles="@(PreviewPng)" DestinationFolder="$(ModDir)" SkipUnchangedFiles="false" Condition="'@(PreviewPng)' != ''" />
   </Target>
 
 </Project>

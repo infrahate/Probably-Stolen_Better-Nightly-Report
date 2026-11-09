@@ -11,7 +11,7 @@
   </GameVersions>
   <Prerequisites />
   <Assemblies>
-    <Assembly>ReportTabIcons.dll</Assembly>
+    <Assembly>BetterNightlyReport.dll</Assembly>
   </Assemblies>
   <Capabilities />
 </Manifest>
