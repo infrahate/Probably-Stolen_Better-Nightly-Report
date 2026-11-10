@@ -40,7 +40,7 @@
 
   <ItemGroup>
     <IconPng Include="Icons\*.png" />
-    <PreviewPng Include="preview.png" Condition="Exists('preview.png')" />
+    <PreviewPng Include="Preview\preview.png" Condition="Exists('Preview\preview.png')" />
   </ItemGroup>
 
   <Target Name="InstallMod" AfterTargets="Build">
