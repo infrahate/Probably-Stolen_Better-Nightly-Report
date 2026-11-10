@@ -29,7 +29,7 @@ dotnet build -c Release
 
 ## Icons
 
-![icons](Preview/icons.png)
+![icons](Preview/icons.png) <br/>
 The mod uses modified versions of the following icons libraries.
 
 ### Withicons
@@ -78,3 +78,5 @@ https://github.com/infrahate/Probably-Stolen_Better-Nightly-Report/issues/
 https://steamcommunity.com/sharedfiles/filedetails/?id=3837069777
 
 ### Official Discord
+
+https://discord.com/channels/1315752321975845004/1569662883871203329
