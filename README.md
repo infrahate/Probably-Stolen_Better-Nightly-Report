@@ -23,6 +23,10 @@ dotnet build -c Release
 
 ## Versions
 
+### 0.2.0
+
+- Added enabled and disabled icons for attractiveness indicators.
+
 ### 0.1.0
 
 - Added Icons for rach event in the nightly log.
