@@ -27,6 +27,7 @@ public class ModEntry : IMod
         if (!debugRegistered && !string.IsNullOrEmpty(Id))
         {
             ModHelper.AddDebugFunction(Id, "Special", "Report lines", AddDeveloperLines);
+            ModHelper.AddDebugFunction(Id, "Special", "Attractiveness 1000", SetAttractivenessToMax);
             debugRegistered = true;
         }
     }
@@ -111,6 +112,27 @@ public class ModEntry : IMod
         feedPage = ReportLines.FeedPage(feedPage, 8);
         calendar.OpenUIFromNightlyReport();
         KeepPickerInFront();
+    }
+
+    static void SetAttractivenessToMax()
+    {
+        PlayerStore store = PlayerStore.Instance;
+        if (store == null)
+        {
+            Log?.Log("Attractiveness can be set once a store is loaded.");
+            return;
+        }
+
+        store.ClearTrash();
+        store.projectorAttractivenessBonus = 0;
+        store.baseStoreAttractiveness = 1000;
+        AdvCalendarUIManager calendar = AdvCalendarUIManager.Instance;
+        if (calendar != null)
+        {
+            calendar.UpdateAttractivenessSubsection();
+        }
+
+        Log?.Log("Store attractiveness set to " + store.GetCurrentStoreAttractiveness() + ".");
     }
 
     static void ClearNightLog()

@@ -122,3 +122,12 @@ static class DecorateMorningReport
         ReportLineIcons.DecorateLog(__instance, kinds);
     }
 }
+
+[HarmonyPatch(typeof(AdvCalendarUIManager), nameof(AdvCalendarUIManager.UpdateAttractivenessSubsection))]
+static class ReplaceAttractivenessSprites
+{
+    static void Postfix(AdvCalendarUIManager __instance)
+    {
+        AttractivenessStages.Apply(__instance);
+    }
+}
