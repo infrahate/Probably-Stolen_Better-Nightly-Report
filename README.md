@@ -68,7 +68,6 @@ https://fonts.google.com/icons
 
 ## Planned Features
 
-- Better attractiveness indicators and UI
 - Interop with other mods that use the NightLog system
 
 ## Bug reports and suggestions
