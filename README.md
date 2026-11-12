@@ -5,10 +5,10 @@ Better Nightly Report has one feature, to make the nightly report, better!
 
 ## Install
 
-### Steam Workshop
+### Steam Workshop (Recommended)
 
 - Subscribe in steam workshop https://steamcommunity.com/sharedfiles/filedetails/?id=3837069777
-- Activate the mod 'Better Nightly Report' in the game's mod menu.
+- Activate the mod 'Better Nightly Report' in the game's mod menu settings.
 
 ## Build from Git
 
@@ -20,8 +20,12 @@ dotnet build -c Release
 ```
 
 - Build is in Mods\BetterNightlyReport
+- You will not get automatic updates, git pull and build to update
 
 ## Versions
+### 0.3.0
+
+ - Added custom font size for nightly report event lines in the mod menu
 
 ### 0.2.0
 
