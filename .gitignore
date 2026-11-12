@@ -3,3 +3,4 @@ bin/
 obj/
 build/
 Directory.Build.user.props
+*.vdf
