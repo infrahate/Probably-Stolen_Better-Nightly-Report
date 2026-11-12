@@ -8,8 +8,10 @@ using UnityEngine.UI;
 public static class ReportLineIcons
 {
     const string IconName = "ReportLineIcon";
-    const float IconSize = 32f;
-    const float TextInset = 36f;
+    const float GameFontSize = 11f;
+    const float IconScale = 2.5f;
+    const float IconSizeMax = 32f;
+    const float TextGap = 4f;
 
     const string DataKey = "report_line_kinds";
 
@@ -76,8 +78,9 @@ public static class ReportLineIcons
             return false;
         }
 
-        tmp.fontSizeMin = 11f;
+        tmp.fontSizeMin = GameFontSize;
         tmp.text = text;
+        ApplyFontSize(tmp);
         Attach(tmp, kind);
         var rect = panel.contentGroupObject.transform as RectTransform;
         if (rect != null)
@@ -111,8 +114,9 @@ public static class ReportLineIcons
                 continue;
             }
 
-            tmp.fontSizeMin = 11f;
+            tmp.fontSizeMin = GameFontSize;
             tmp.text = texts[i];
+            ApplyFontSize(tmp);
             Attach(tmp, kinds[i]);
         }
 
@@ -148,8 +152,9 @@ public static class ReportLineIcons
                     continue;
                 }
 
-                tmp.fontSizeMin = 11f;
+                tmp.fontSizeMin = GameFontSize;
                 tmp.text = "-" + logs[i];
+                ApplyFontSize(tmp);
             }
         }
         else
@@ -222,6 +227,7 @@ public static class ReportLineIcons
             }
 
             string kind = i < fromText ? Classify(line.text) : kinds[storedOffset + (i - fromText)];
+            ApplyFontSize(line);
             Attach(line, kind);
             marked++;
         }
@@ -368,6 +374,90 @@ public static class ReportLineIcons
         templates.Add((kind, Tags.Replace(text, "").Trim()));
     }
 
+    public static void ApplyFontSize()
+    {
+        StartOfDayUIManager panel = StartOfDayUIManager.Instance;
+        if (panel == null || panel.contentGroupObject == null)
+        {
+            return;
+        }
+
+        Transform content = panel.contentGroupObject.transform;
+        for (int i = 0; i < content.childCount; i++)
+        {
+            ApplyFontSize(content.GetChild(i).GetComponent<TextMeshProUGUI>());
+        }
+
+        var rect = content as RectTransform;
+        if (rect != null)
+        {
+            LayoutRebuilder.ForceRebuildLayoutImmediate(rect);
+        }
+    }
+
+    static void ApplyFontSize(TextMeshProUGUI tmp)
+    {
+        if (tmp == null)
+        {
+            return;
+        }
+
+        int size = ChosenFontSize();
+        if (size <= 0)
+        {
+            tmp.fontSizeMin = GameFontSize;
+            tmp.enableAutoSizing = true;
+        }
+        else
+        {
+            tmp.enableAutoSizing = false;
+            tmp.fontSize = size;
+        }
+
+        FitIcon(tmp);
+    }
+
+    static float IconPixels()
+    {
+        int size = ChosenFontSize();
+        return IconPixelsFor(size > 0 ? size : (int)GameFontSize);
+    }
+
+    public static int IconPixelsFor(int fontSize)
+    {
+        float basis = fontSize > 0 ? fontSize : GameFontSize;
+        return Mathf.Min(Mathf.RoundToInt(IconSizeMax), Mathf.RoundToInt(IconScale * basis));
+    }
+
+    static float InsetFor(float icon)
+    {
+        return icon + TextGap;
+    }
+
+    static void FitIcon(TextMeshProUGUI tmp)
+    {
+        float icon = IconPixels();
+        Transform existing = tmp.transform.Find(IconName);
+        if (existing is RectTransform rect)
+        {
+            rect.sizeDelta = new Vector2(icon, icon);
+        }
+
+        float inset = InsetFor(icon);
+        Vector4 margin = tmp.margin;
+        tmp.margin = new Vector4(inset, margin.y, margin.z, margin.w);
+    }
+
+    static int ChosenFontSize()
+    {
+        if (ModEntry.UseReportFontSize == null || !ModEntry.UseReportFontSize.Value || ModEntry.ReportFontSize == null)
+        {
+            return 0;
+        }
+
+        return ModEntry.ReportFontSize.Value;
+    }
+
     static void Attach(TextMeshProUGUI tmp, string kind)
     {
         if (tmp == null || tmp.transform.Find(IconName) != null)
@@ -382,7 +472,8 @@ public static class ReportLineIcons
         rect.anchorMax = new Vector2(0f, 0.5f);
         rect.pivot = new Vector2(0f, 0.5f);
         rect.anchoredPosition = new Vector2(1f, 0f);
-        rect.sizeDelta = new Vector2(IconSize, IconSize);
+        float icon = IconPixels();
+        rect.sizeDelta = new Vector2(icon, icon);
 
         Sprite sprite = SpriteFor(kind);
         if (sprite == null)
@@ -397,9 +488,10 @@ public static class ReportLineIcons
         image.raycastTarget = false;
 
         Vector4 margin = tmp.margin;
-        if (margin.x < TextInset)
+        float inset = InsetFor(icon);
+        if (margin.x < inset)
         {
-            tmp.margin = new Vector4(TextInset, margin.y, margin.z, margin.w);
+            tmp.margin = new Vector4(inset, margin.y, margin.z, margin.w);
         }
     }
 

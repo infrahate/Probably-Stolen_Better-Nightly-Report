@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using HarmonyLib;
+using UnityEngine;
 
 [HarmonyPatch]
 static class ReportPatches
@@ -129,5 +130,53 @@ static class ReplaceAttractivenessSprites
     static void Postfix(AdvCalendarUIManager __instance)
     {
         AttractivenessStages.Apply(__instance);
+    }
+}
+
+[HarmonyPatch(typeof(ModConfigWindow), "BuildEntry")]
+static class ShowReportFontPixels
+{
+    const string Key = "report_font_size";
+
+    static void Postfix(CustomUIBuilder b, ConfigEntry entry)
+    {
+        if (b == null || entry == null || entry.Key != Key || entry.Config == null || entry.Config.ModId != ModEntry.Id)
+        {
+            return;
+        }
+
+        CustomUIWindow window = b.Handle;
+        if (window == null)
+        {
+            return;
+        }
+
+        CustomUIElement slider = window.Get(Key);
+        CustomUIElement label = window.Get("label_" + Key);
+        if (slider == null || slider.slider == null || label == null)
+        {
+            return;
+        }
+
+        void Show(float value)
+        {
+            label.SetText(Label(entry, Mathf.RoundToInt(value)));
+        }
+
+        Show(slider.slider.value);
+        slider.slider.onValueChanged.AddListener(Show);
+    }
+
+    static string Label(ConfigEntry entry, int size)
+    {
+        string title = entry.Label != null ? entry.Label() : "Report font size";
+        string text = title + "  " + size + " pt";
+        if (entry.Tooltip == null || entry.Config == null)
+        {
+            return text;
+        }
+
+        string link = "modcfg:" + entry.Config.ModId + ":" + entry.Key;
+        return text + " <link=\"" + link + "\"><sprite name=\"info\" tint=1></link>";
     }
 }

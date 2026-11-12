@@ -5,11 +5,21 @@ public class ModEntry : IMod
 {
     public static ModLog Log;
     public static string Id;
+    public static ConfigEntry<bool> UseReportFontSize;
+    public static ConfigEntry<int> ReportFontSize;
 
     public void Init(ModManifest manifest)
     {
         Id = manifest.ID;
         Log = new ModLog(manifest);
+        ModConfig config = ModHelper.GetConfig(manifest.ID);
+        UseReportFontSize = config.Define("report_font_custom", false, "Report", () => "Custom report font size",
+            tooltip: () => "Use the size below for the morning report lines. Off keeps the game's size.");
+        ReportFontSize = config.Define("report_font_size", 32, "Report", () => "Report font size",
+            min: 8, max: 32,
+            tooltip: () => "Point size of the morning report lines.");
+        UseReportFontSize.OnChanged += _ => ReportLineIcons.ApplyFontSize();
+        ReportFontSize.OnChanged += _ => ReportLineIcons.ApplyFontSize();
         Log.Log("Report tab icons ready.");
     }
 
